@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <style>
+            html, * {
+                font-family: Arial;
+            }
+            
+            body, html, div#outer { height:100%; }
+div#outer { text-align:center; }
+div#inner { display:inline-block; }
+        </style>
+    </head>
+    <body>
+        <div id="outer">
+            <div id="inner">
+                <div id='loading' style='margin-top:300px'>Пожалуйста, подождите...</div>
+                <iframe name='graph' id='graph' style='display1: none' border: 2px #ccc' width="1600" height="800"></iframe>
+            </div>
+        </div>
+        <script>
+            const download = async () => {
+                let url = "http://172.105.91.42:8088/forecast3?region=11&graph_type=trend&oil=42.53142833709718&al=1955.892857142857&gas=2.757964261940546&copper=3.2512857147625516&gazprom=4.778214250292097&rusal=35.26767880575998&rub=76.25914709908622"
+
+                let url2 = "http://172.105.91.42:8088/forecast3" + window.location.search;
+
+                console.log('url2', url2)
+                //let data = await fetch(url).then(resp => resp.text());
+
+                console.log(window.frames)
+                window.frames['graph'].location = 'http://35.245.223.194:8088/forecast?region=11';
+
+                
+
+                // const win = document.getElementById('graph');
+
+                // const doc = ifrm.contentDocument? ifrm.contentDocument: ifrm.contentWindow.document;
+
+                // doc.innerHTML = data;
+
+                document.getElementById('loading').style.display = "none";
+                document.getElementById('graph').style.display = "block";
+
+            }
+            console.log('params', window.location.search)
+            setTimeout(() => {
+                download();
+            }, 250)
+        </script>
+    </body>
+</html>
+
+
+
