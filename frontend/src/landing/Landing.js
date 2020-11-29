@@ -45,29 +45,9 @@ const Landing = () => {
         <Section className={classes.pagePaddingTop}>
           <Hero />
         </Section>
-        {/* <Section className={classes.sectionNoPaddingTop}>
-          <Reviews data={reviews} />
-        </Section>
-        <Section className={classes.sectionNoPaddingTop}>
-          <Hub />
-        </Section> */}
+        
       </div>
-      {/* <Section narrow>
-        <Support data={support} />
-      </Section>
-      <SectionAlternate>
-        <Customization />
-      </SectionAlternate>
-      <Section>
-        <Partners data={integrations} />
-      </Section>
-      <SectionAlternate innerNarrowed>
-        <Pricings />
-      </SectionAlternate>
-      <Section>
-        <Download data={[]} />
-      </Section> */}
-      {/* <Divider /> */}
+      
     </div>
   );
 };

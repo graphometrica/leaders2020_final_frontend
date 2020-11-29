@@ -80,12 +80,12 @@ const Hero = props => {
             </>}
             ctaGroup={[
               <Button variant="contained" color="primary" size="large"
-              href="/#/forecast">
-                Смоделировать потребление
+              href="/#/forecast" target='_blank'>
+                Краткосрочный прогноз по регионам
               </Button>,
-              // <Button variant="outlined" color="primary" size="large">
-              //   Learn more
-              // </Button>,
+              <Button variant="outlined" color="primary" size="large" href="/#/forecast-long-term" target='_blank'>
+                Моделирование по ОЭС
+              </Button>,
             ]}
             align="left"
             disableGutter

@@ -226,7 +226,7 @@ const Forecast2 = () => {
                             <InputLabel id="demo-simple-select-outlined-label">Регион</InputLabel>
                             <Select
                             labelId="demo-simple-select-outlined-label"
-                            style={{width: '450px'}}
+                            style={{width: '400px'}}
                             value={curRegion}
                             onChange={onChangeRegion}
                             label="Регион"
@@ -275,6 +275,7 @@ const Forecast2 = () => {
                                     Изменить данные
                                 </Button>
                                 <Button style={{marginLeft: '24px'}} variant="contained" color="primary" onClick={() => {
+                                    alert('Графики корреляций откроются в BI системе на базе open source решения Apache Superset.\r\nИспользуйте для входа логин: graphometrica, пароль: minenergo');
                                     window.open('http://34.86.63.199:8088/superset/dashboard/1/?standalone=true', '_blank');
                                 }}                                
                                  >
@@ -474,32 +475,7 @@ const Forecast2 = () => {
                     </Grid>  
                 </Grid>
 
-                <Grid item xs={4}>                    
-                    <Grid container>
-                        <Grid item xs={12} style={ {textAlign: 'center'}}>
-                            <Typography variant="h6" component="p" color="textSecondary">
-                            Квартальный тренд
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                        {/* <a href={getGraphUrl('weekly_part')} target="_blank"><img className="forecastGraph" src={ `data:image/png;base64, ${curFeatures.weekly_trend}`} /></a> */}
-                        <div className="container">
-  
-  <div className="content">
-  
-    <a href={getGraphUrl('quarterly_part')} target="_blank">
-      <div className="content-overlay"></div>
-      <img className="content-image" src={ `data:image/png;base64, ${curFeatures.quarterly_forecast}`} />
-      <div className="content-details fadeIn-bottom">
-        <h3 className="content-title">Посмотреть интерактивный график</h3>
-        <p className="content-text">Откроется в новом окне и займет некоторое время</p>
-      </div>
-    </a>
-  </div>
-</div>                        
-                        </Grid>
-                    </Grid>  
-                </Grid> 
+               
 
 
 
@@ -508,15 +484,12 @@ const Forecast2 = () => {
             </Grid>
             
             <Grid container>
-                <Grid item xs={12}>
-                <Typography variant="h6" component="p" color="textSecondary">Пример валидации модели (по Астраханской области)</Typography><br/>
-                    <img style={{width: '100%'}} src="https://raw.githubusercontent.com/graphometrica/minenergo-models/master/plots/region_11.png" />
-                </Grid>
+                <Grid item xs={12} style={{textAlign: 'center'}}>
+                    <Typography variant="h6" component="p" color="textSecondary">Валидация модели для {regions.find(i=>i.SubjectId === curRegion.split(';')[1]).Name} ({regions.find(i=>i.PowerSystemId === curRegion.split(';')[0]).OES})</Typography><br/>
+                        <img style={{width: '100%'}} src={`https://raw.githubusercontent.com/graphometrica/minenergo-models/master/plots/region_${curRegion.split(';')[1]}.png`} />
+                    </Grid>
 
-                <Grid item xs={12}>
-                <Typography variant="h6" component="p" color="textSecondary">Пример валидации модели (по Владимирской области)</Typography><br/>
-                    <img style={{width: '100%'}} src="https://raw.githubusercontent.com/graphometrica/minenergo-models/master/plots/region_17.png" />
-                </Grid>
+                
             </Grid>
 
             

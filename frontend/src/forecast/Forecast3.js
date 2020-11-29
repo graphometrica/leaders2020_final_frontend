@@ -27,6 +27,7 @@ let uniqOES = [...new Set(regions.map(i=>i.OES))]
 let oeses = [];
 
 uniqOES.forEach(r => {
+    // по этой ОЭС нет данных в системе кейсодержателя
     if(r !== 'ОЭС Востока') {
         oeses.push(regions.find(i=>i.OES === r));
     }
@@ -79,7 +80,7 @@ const Forecast3 = () => {
 
     const calculateByFormula = (data) => {
 
-        console.log('DATA', data)
+        
         console.log('data.formula', data.formula)
         let formula = data.formula.substr(data.formula.indexOf('= ') + 2);
         let minus = [];
@@ -98,16 +99,6 @@ const Forecast3 = () => {
             formula = formula.split(key).join('(' + data.coefficients[rus[key]] +')' )
         })
 
-        // console.log(`BEFORE ${formula}`)
-        // formula = formula
-        //     .split('+-').join('-')
-        //     .split('+ -').join('-')
-        //     .split('-+').join('-')
-        //     .split('- +').join('-')
-        //     .split('--').join('+')
-        //     .split('- -').join('+')
-        //     .split('++').join('+')
-        //     .split('+ +').join('+')
             console.log(`AFTER ${formula}`)
 
             let finalValue = round(parseFloat(eval(formula)));
@@ -372,6 +363,32 @@ const Forecast3 = () => {
 
                     <Grid item xs={3}></Grid>
                     
+                </Grid>
+
+                <Grid container spacing={2} style={{marginTop: '40px'}}>
+                    <Grid item xs={12} style={{textAlign: 'center'}}>
+                        <Typography variant="h6" component="p" color="textSecondary">Точность предсказаний</Typography>
+                    </Grid>
+                    <Grid item xs={12} style={{textAlign: 'center'}}>
+                        <img style={{display: 'inline', width: '1200px'}} src={ `data:image/png;base64, ${lastResponse.data_plot}`} />
+                    </Grid>                    
+                </Grid>
+
+                <Grid container spacing={2} style={{marginTop: '32px'}}>
+                    <Grid item xs={4}></Grid>
+                    <Grid item xs={4}>
+                        <pre>{lastResponse.summary}</pre>
+                    </Grid>
+                    <Grid item xs={4}></Grid>
+                </Grid>
+
+                <Grid container spacing={2} style={{marginTop: '40px'}}>
+                    <Grid item xs={12} style={{textAlign: 'center'}}>
+                        <Typography variant="h6" component="p" color="textSecondary">Корреляция факторов</Typography>
+                    </Grid>
+                    <Grid item xs={12} style={{textAlign: 'center'}}>
+                        <img style={{display: 'inline', width: '1200px'}} src={ `data:image/png;base64, ${lastResponse.corr_plot}`} />
+                    </Grid>                    
                 </Grid>
             
 
