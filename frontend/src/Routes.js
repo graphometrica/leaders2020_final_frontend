@@ -10,7 +10,8 @@ import {
 
 import {  
   Forecast as ForecastView,
-  Forecast2 as ForecastView2
+  Forecast2 as ForecastView2,
+  Forecast3 as ForecastView3
 } from './forecast';
 
 const Routes = () => {
@@ -20,22 +21,29 @@ const Routes = () => {
         component={LandingView}
         exact
         layout={MainLayout}
-        path="/forecast"
+        path="/"
       />
 
 <RouteWithLayout
         component={ForecastView2}
         exact
         layout={MainLayout}
-        path="/"
+        path="/forecast"
       />
 
-    <RouteWithLayout
+<RouteWithLayout
+        component={ForecastView3}
+        exact
+        layout={MainLayout}
+        path="/forecast-long-term"
+      />      
+
+    {/* <RouteWithLayout
         component={ForecastView}
         exact
         layout={MainLayout}
         path="/2"
-      />
+      /> */}
       
     </Switch>
   );

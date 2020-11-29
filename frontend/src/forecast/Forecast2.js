@@ -54,10 +54,12 @@ const Forecast2 = () => {
         "gazprom": '',
         "rusal": '',
         "rub": '',
+        temp: '',
         forecast_plot: '',
         trend_plot: '',
         daily_trend: '',
-        weekly_trend: ''
+        weekly_trend: '',
+        quarterly_forecast: ''
     })
 
     const [editFeatures, setEditFeatures] = React.useState({
@@ -67,7 +69,8 @@ const Forecast2 = () => {
         "copper": 0,
         "gazprom": 0,
         "rusal": 0,
-        "rub": 0
+        "rub": 0,
+        temp: 0
     })
 
     const [calculating, setCalculating] = React.useState(true)
@@ -77,24 +80,27 @@ const Forecast2 = () => {
     React.useEffect( async () => {
         if (calculating) {
 
-            const {oil, al, gas,copper,gazprom,rusal,rub } = curFeatures;
+            const {oil, al, gas,copper,gazprom,rusal,rub,temp } = curFeatures;
             let region = curRegion.split(';')[1];
 
             let url = `http://172.105.91.42:8088/forecast?region=${region}`;
 
-            if (oil && al && gas && copper && gazprom && rusal && rub) {
+            if (oil !== '' && al !== '' && gas !== '' && copper !== '' && gazprom !== '' && rusal !== '' && rub !== '') {
                 url = url +`&oil=${oil}&al=${al}&gas=${gas}&copper=${copper}&gazprom=${gazprom}&rusal=${rusal}&rub=${rub}`
             }
             let forecast_plot = '';
                     let trend_plot = ''
                     let daily_trend = ''
                     let weekly_trend = '';
+                    let quarterly_forecast = '';
             axios.get(url).then(resp => {
                 let {data} = resp;
                 forecast_plot = data.forecast_plot
                 trend_plot = data.trend_plot
                 daily_trend = data.daily_trend
                 weekly_trend = data.weekly_forecast
+                quarterly_forecast = data.quarterly_forecast
+                
 
                 if (!initialized) {
                     setInitialized(true);
@@ -106,7 +112,8 @@ const Forecast2 = () => {
                         trend_plot: trend_plot,
                         daily_trend: daily_trend,
                         weekly_trend: weekly_trend,
-    
+                        quarterly_forecast: quarterly_forecast,
+                        temp,
                         oil,
                         al,
                         gas,
@@ -114,6 +121,7 @@ const Forecast2 = () => {
                         gazprom,
                         rusal,
                         rub,
+                        
                     })
                     setCalculating(false)
                 }
@@ -135,7 +143,8 @@ const Forecast2 = () => {
                     trend_plot: trend_plot,
                     daily_trend: daily_trend,
                     weekly_trend: weekly_trend,
-
+                    quarterly_forecast: quarterly_forecast,
+                    temp: resp.data.temp,
                     oil: resp.data.oil,
                     al: resp.data.al,
                     gas: resp.data.gas,
@@ -197,8 +206,8 @@ const Forecast2 = () => {
         const {oil, al, gas,copper,gazprom,rusal,rub } = curFeatures;
         let region = curRegion.split(';')[1];
 
-        //let url = `http://172.105.91.42:8088/forecast3?region=${region}&graph_type=${type}`;
-        let url = `graph.html?region=${region}&graph_type=${type}`;
+        let url = `http://172.105.91.42:8088/forecast3?region=${region}&graph_type=${type}`;
+        //let url = `graph.html?region=${region}&graph_type=${type}`;
 
         if (oil && al && gas && copper && gazprom && rusal && rub) {
             url = url +`&oil=${oil}&al=${al}&gas=${gas}&copper=${copper}&gazprom=${gazprom}&rusal=${rusal}&rub=${rub}`
@@ -254,6 +263,9 @@ const Forecast2 = () => {
                             </Grid>
                             <Grid item className="featureItem">
                                 Доллар: <Link onClick={handleOpenEdit} className='clickable' href="#" >{round(curFeatures.rub)}</Link>
+                            </Grid>
+                            <Grid item className="featureItem">
+                                Температура: <Link onClick={handleOpenEdit} className='clickable' href="#" >{round(curFeatures.temp)}</Link>
                             </Grid>
 
                             
@@ -434,6 +446,8 @@ const Forecast2 = () => {
                         </Grid>
                     </Grid>  
                 </Grid>
+
+
                 <Grid item xs={4}>                    
                     <Grid container>
                         <Grid item xs={12} style={ {textAlign: 'center'}}>
@@ -458,9 +472,54 @@ const Forecast2 = () => {
 </div>                        
                         </Grid>
                     </Grid>  
-                </Grid>               
+                </Grid>
+
+                <Grid item xs={4}>                    
+                    <Grid container>
+                        <Grid item xs={12} style={ {textAlign: 'center'}}>
+                            <Typography variant="h6" component="p" color="textSecondary">
+                            Квартальный тренд
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                        {/* <a href={getGraphUrl('weekly_part')} target="_blank"><img className="forecastGraph" src={ `data:image/png;base64, ${curFeatures.weekly_trend}`} /></a> */}
+                        <div className="container">
+  
+  <div className="content">
+  
+    <a href={getGraphUrl('quarterly_part')} target="_blank">
+      <div className="content-overlay"></div>
+      <img className="content-image" src={ `data:image/png;base64, ${curFeatures.quarterly_forecast}`} />
+      <div className="content-details fadeIn-bottom">
+        <h3 className="content-title">Посмотреть интерактивный график</h3>
+        <p className="content-text">Откроется в новом окне и займет некоторое время</p>
+      </div>
+    </a>
+  </div>
+</div>                        
+                        </Grid>
+                    </Grid>  
+                </Grid> 
+
+
+
+
                
             </Grid>
+            
+            <Grid container>
+                <Grid item xs={12}>
+                <Typography variant="h6" component="p" color="textSecondary">Пример валидации модели (по Астраханской области)</Typography><br/>
+                    <img style={{width: '100%'}} src="https://raw.githubusercontent.com/graphometrica/minenergo-models/master/plots/region_11.png" />
+                </Grid>
+
+                <Grid item xs={12}>
+                <Typography variant="h6" component="p" color="textSecondary">Пример валидации модели (по Владимирской области)</Typography><br/>
+                    <img style={{width: '100%'}} src="https://raw.githubusercontent.com/graphometrica/minenergo-models/master/plots/region_17.png" />
+                </Grid>
+            </Grid>
+
+            
 
             {/* <Grid container spacing={2} style={{marginTop: '32px'}}>
                 

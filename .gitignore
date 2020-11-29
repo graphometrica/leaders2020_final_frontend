@@ -355,8 +355,7 @@ frontend/src/components/atoms/Image/index.js
 frontend/src/components/atoms/index.js
 frontend/src/components/atoms/LearnMoreLink/index.js
 frontend/src/components/atoms/LearnMoreLink/LearnMoreLink.js
-frontend/src/components/molecules/CountUpNumber/CountUpNumber.js
-frontend/src/components/molecules/CountUpNumber/index.js
+
 frontend/src/components/molecules/DescriptionCta/DescriptionCta.js
 frontend/src/components/molecules/DescriptionCta/index.js
 frontend/src/components/molecules/IconAlternate/IconAlternate.js
@@ -371,8 +370,7 @@ frontend/src/components/molecules/SwiperImage/index.js
 frontend/src/components/molecules/SwiperImage/SwiperImage.js
 frontend/src/components/molecules/SwiperNumber/index.js
 frontend/src/components/molecules/SwiperNumber/SwiperNumber.js
-frontend/src/components/molecules/TypedText/index.js
-frontend/src/components/molecules/TypedText/TypedText.js
+
 frontend/src/components/organisms/Accordion/Accordion.js
 frontend/src/components/organisms/Accordion/Accordion.md
 frontend/src/components/organisms/Accordion/index.js

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router } from 'react-router-dom';
+import { Router, HashRouter } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
@@ -46,9 +46,9 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       {/* <Paper> */}
-        <Router history={browserHistory}>
+        <HashRouter history={browserHistory}>
           <Routes />
-        </Router>
+        </HashRouter>
       {/* </Paper> */}
     </ThemeProvider>
   );
