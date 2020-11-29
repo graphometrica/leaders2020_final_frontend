@@ -43,10 +43,7 @@ const round = (num) => {
 
 const Forecast2 = () => {
 
-    const [curRegion, setCurRegion] = React.useState('840000;11')
-    const [showEdit, setShowEdit] = React.useState(false)
-    const [initialized, setInitialized] = React.useState(false)
-    const [curFeatures, setCurFeatures] = React.useState({
+    let def = {
         "oil": '',
         "al": '',
         "gas": '',
@@ -60,9 +57,13 @@ const Forecast2 = () => {
         daily_trend: '',
         weekly_trend: '',
         quarterly_forecast: ''
-    })
+    }
+    const [curRegion, setCurRegion] = React.useState('840000;11')
+    const [showEdit, setShowEdit] = React.useState(false)
+    const [initialized, setInitialized] = React.useState(false)
+    const [curFeatures, setCurFeatures] = React.useState(def)
 
-    const [editFeatures, setEditFeatures] = React.useState({
+    let def2 = {
         "oil": 0,
         "al": 0,
         "gas": 0,
@@ -71,7 +72,8 @@ const Forecast2 = () => {
         "rusal": 0,
         "rub": 0,
         temp: 0
-    })
+    }
+    const [editFeatures, setEditFeatures] = React.useState(def2)
 
     const [calculating, setCalculating] = React.useState(true)
 
@@ -85,8 +87,8 @@ const Forecast2 = () => {
 
             let url = `http://172.105.91.42:8088/forecast?region=${region}`;
 
-            if (oil !== '' && al !== '' && gas !== '' && copper !== '' && gazprom !== '' && rusal !== '' && rub !== '') {
-                url = url +`&oil=${oil}&al=${al}&gas=${gas}&copper=${copper}&gazprom=${gazprom}&rusal=${rusal}&rub=${rub}`
+            if (oil !== '' && al !== '' && gas !== '' && copper !== '' && gazprom !== '' && rusal !== '' && rub !== '' && temp !== '') {
+                url = url +`&oil=${oil}&al=${al}&gas=${gas}&copper=${copper}&gazprom=${gazprom}&rusal=${rusal}&rub=${rub}&temp=${temp}`
             }
             let forecast_plot = '';
                     let trend_plot = ''
@@ -156,7 +158,7 @@ const Forecast2 = () => {
                 setCalculating(false)
             })            
         }
-    }, [calculating]);
+    }, [calculating, initialized]);
 
     
 
@@ -203,14 +205,14 @@ const Forecast2 = () => {
     }
 
     const getGraphUrl = (type) => {
-        const {oil, al, gas,copper,gazprom,rusal,rub } = curFeatures;
+        const {oil, al, gas,copper,gazprom,rusal,rub, temp } = curFeatures;
         let region = curRegion.split(';')[1];
 
         let url = `http://172.105.91.42:8088/forecast3?region=${region}&graph_type=${type}`;
         //let url = `graph.html?region=${region}&graph_type=${type}`;
 
         if (oil && al && gas && copper && gazprom && rusal && rub) {
-            url = url +`&oil=${oil}&al=${al}&gas=${gas}&copper=${copper}&gazprom=${gazprom}&rusal=${rusal}&rub=${rub}`
+            url = url +`&oil=${oil}&al=${al}&gas=${gas}&copper=${copper}&gazprom=${gazprom}&rusal=${rusal}&rub=${rub}&temp=${temp}`
         }
         return url;
     }
@@ -274,9 +276,11 @@ const Forecast2 = () => {
                                 <Button onClick={handleOpenEdit}  color="primary" >
                                     Изменить данные
                                 </Button>
-                                <Button style={{marginLeft: '24px'}} variant="contained" color="primary" onClick={() => {
-                                    alert('Графики корреляций откроются в BI системе на базе open source решения Apache Superset.\r\nИспользуйте для входа логин: graphometrica, пароль: minenergo');
-                                    window.open('http://34.86.63.199:8088/superset/dashboard/1/?standalone=true', '_blank');
+                                <Button style={{marginLeft: '24px'}} variant="contained" color="primary"
+                                href={`http://34.86.63.199:8088/superset/dashboard/1/?standalone=true`}
+                                target='_blank'
+                                 onClick={() => {
+                                    alert('Графики корреляций откроются в BI системе на базе open source решения Apache Superset.\r\nИспользуйте для входа логин: graphometrica, пароль: minenergo');                                    
                                 }}                                
                                  >
                                     Графики корреляций
@@ -351,6 +355,12 @@ const Forecast2 = () => {
                             onChange={(e) => handleChangeFeature('rub', e.target.value) }
                             style={{width: '100%'}} label="Доллар" variant="outlined" />
                         </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                            value={editFeatures.temp}
+                            onChange={(e) => handleChangeFeature('temp', e.target.value) }
+                            style={{width: '100%'}} label="Температура" variant="outlined" />
+                        </Grid>
                     </Grid>
                 </form>
                 
@@ -358,6 +368,16 @@ const Forecast2 = () => {
                 <DialogActions>
                     <Button onClick={handleCloseEdit} color="primary">
                         Закрыть
+                    </Button>
+                    <Button onClick={() => {
+                        setEditFeatures(def)
+                        setCurFeatures(def2)
+                        setInitialized(false);
+                        setCalculating(true);
+                        handleCloseEdit()
+                    }
+                        } color="primary">
+                        Сбросить до средних
                     </Button>
                     <Button onClick={handleCalculate} color="primary">
                         Моделировать
