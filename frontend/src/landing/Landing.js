@@ -40,7 +40,7 @@ const Landing = () => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root} style={{background: 'url(https://products.ls.graphics/mesh-gradients/images/49.-Soft-Peach_1.jpg)'}}>
+    <div className={classes.root} style={{background: 'url(./images/bg.jpg)'}}>
       <div  style={ {paddingTop:'100px', paddingBottom: '300px'}}>
         <Section className={classes.pagePaddingTop}>
           <Hero />
